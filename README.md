@@ -10,7 +10,7 @@ Mix and Synthetize audio data - by parsing tone scripts,... independently from (
 
 *I'm thought of adding also half precission (16bit-float) support,.. 
 but since even these days today now there still no hardware interface is available supporting 16bit-float... :( 
-, most precticable still stays using 24bit integers insted always
+, most precticable still stays to use always 24bit integers instead
 
 ### Supported channel constellations:
 
