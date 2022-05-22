@@ -18,13 +18,4 @@ Mix and Synthetize audio data - by parsing tone scripts,... independently from (
 - 5.1
 - 7.1
 
-### Supported file formats
-
-- Windows (wav)
-- Sun audio (au, snd)
-- NetPbm (pam) ... (quite uncommon for transporting audiodata.. but really handy format for this)
-
-## Not supported: 
-- Anything which is using lossy data compression like: mp3, atrac, mpa, aac, ac3 ... these never will be supported by this library at all. this is not a compression library!
-- Anything which is using lossles data compression,.. like flc, ape, other lossess formats, maybe will gain support later some days in the future.  
 
