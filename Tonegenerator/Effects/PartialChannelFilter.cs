@@ -19,10 +19,10 @@ namespace Stepflow.Audio.Elements
     /// on a TrackMaster output track. It sets up fx
     /// controllers as frequency split to make .1 and
     /// center channels gain just partial frequencies
-    /// when output format defines surround channels
+    /// when output format defines surround channels.
     /// (.1 channel gains just lower sub band fequency
     /// and center channel mostly mid band frequencies) 
-    /// - additionally it offers applying soft compression
+    /// further it offers applying slight compression 
     // (3:2 @ +half) to either the input before band
     // split or to the output after filtering is done
     /// </summary>
