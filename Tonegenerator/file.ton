@@ -1,0 +1,26 @@
+# filename for wave output:
+file
+# duration of wave in ms:
+10000
+# oscillators:
+4
+# osc[1]
+saw
+0x0
+220~2200
+1.0x0.01~0.1x0.1
+# osc[2]
+sin
+1x0
+220~2200
+1.0x0.01~0.1x0.1
+# osc[3]
+pls
+0x1
+220~2200
+1.0x0.01~0.1x0.1
+# osc[4]
+tri
+1x1
+220~2200
+1.0x0.01~0.1x0.1

@@ -1,0 +1,41 @@
+test
+# duration of wave in ms: 
+60000
+# oscillators: 
+4
+# osc[1] waveform <sin|saw|pls|tri> | <file|script>:
+sin
+# osc[1] position in field of sound <LR[xFR]>[~<LR[xFR]>]:
+0x1~1x1
+# osc[1] enter <start[~end]> frequency:
+100~1000
+# osc[1] enter either: AbsoluteValue Vabs or LinearChange Vbeg~Vend or
+# ADSR Envelop: AlxAt[~SlxDt] (*where Rt implies by T-(At+Dt) where T=1.0 is total length):
+0.9x0.1~0.5x0.75
+# osc[2] waveform <sin|saw|pls|tri> | <file|script>:
+pls
+# osc[2] position in field of sound <LR[xFR]>[~<LR[xFR]>]:
+1x1~1x0
+# osc[2] enter <start[~end]> frequency:
+1000~100
+# osc[2] enter either: AbsoluteValue Vabs or LinearChange Vbeg~Vend or
+# ADSR Envelop: AlxAt[~SlxDt] (*where Rt implies by T-(At+Dt) where T=1.0 is total length):
+1.0x0.333~0.5x0.666
+# osc[3] waveform <sin|saw|pls|tri> | <file|script>:
+tri
+# osc[3] position in field of sound <LR[xFR]>[~<LR[xFR]>]:
+1x0~0x0
+# osc[3] enter <start[~end]> frequency:
+200~2000
+# osc[3] enter either: AbsoluteValue Vabs or LinearChange Vbeg~Vend or
+# ADSR Envelop: AlxAt[~SlxDt] (*where Rt implies by T-(At+Dt) where T=1.0 is total length):
+0.5x0.5~1.0x0.25
+# osc[4] waveform <sin|saw|pls|tri> | <file|script>:
+saw
+# osc[4] position in field of sound <LR[xFR]>[~<LR[xFR]>]:
+0x0~0x1
+# osc[4] enter <start[~end]> frequency:
+100~1000
+# osc[4] enter either: AbsoluteValue Vabs or LinearChange Vbeg~Vend or
+# ADSR Envelop: AlxAt[~SlxDt] (*where Rt implies by T-(At+Dt) where T=1.0 is total length):
+1

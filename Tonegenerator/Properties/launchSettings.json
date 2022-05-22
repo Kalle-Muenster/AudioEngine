@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Tonegenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "--5.1 --24bit --tonescript=file.ton",
+      "nativeDebugging": true
+    }
+  }
+}
