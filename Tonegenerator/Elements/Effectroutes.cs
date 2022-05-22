@@ -38,41 +38,6 @@ namespace Stepflow.Audio.Elements
         Surround   = 0x8000,
         MASKEN     = 0x7f00
     }
-    /*
-    [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public struct EffectParameter<ParaEnum> where ParaEnum : struct
-    {
-        [FieldOffset(0)] private uint         FxInfo;
-        [FieldOffset(0)] private EffectMode   FxMode;
-        [FieldOffset(0)] public readonly byte Number;
-        [FieldOffset(1)] public readonly byte Index1;
-        [FieldOffset(2)] public readonly byte Index2;
-        [FieldOffset(2)] private EffectType   FxType;
-
-        public EffectMode Mode { get { return FxMode & EffectMode.MASKEN; } }
-        public EffectType Type { get { return FxType & EffectType.MASKEN; } }
-
-        private EffectParameter( EffectMode mode, EffectType type, int indexA, int indexB ) : this()
-        {
-            FxInfo = (uint)mode | ((uint)type << 16) | ((uint)indexB << 16);
-            Index1 = (byte)indexA;
-        }
-        public EffectParameter( int paraNum, EffectMode mode, EffectType type, int indexA, int indexB )
-            : this(mode, type, indexA, indexB)
-        {
-            Number = (byte)paraNum;
-        }
-        public EffectParameter( Enum paraNam, EffectMode mode, EffectType type, int indexA, int indexB )
-            : this(mode, type, indexA, indexB)
-        {
-            Number = (byte)paraNam.CompareTo( Enum.GetValues( paraNam.GetType() ).GetValue(0) as Enum );
-        }
-        public static implicit operator int( EffectParameter<ParaEnum> cast )
-        {
-            return cast.Number;
-        }
-    }
-    */
 
     public interface IEffect
     {
@@ -185,14 +150,10 @@ namespace Stepflow.Audio.Elements
         public override IFrame DoFrame( IFrame frame ) {
             impl.output.Set( frame );
             return impl.DoFrame( impl.output.Amp( mix ) );
-            //impl.output.Set( frame );
-            //ApplyOn( ref impl.output );
-            //return impl.output;
         }
 
         public override void ApplyOn( ref IFrame frame ) {
             if (!ByPass) frame.Add( DoFrame( frame ) );
-            //frame.Add( impl.DoFrame( impl.put.Amp( mix ) ) ); // frame.Clone().Amp( mix ) ) );
         }
 
         public FX fxImpl() { return impl; }
