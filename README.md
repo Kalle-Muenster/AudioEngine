@@ -12,10 +12,7 @@ Mix and Synthetize audio data - by parsing tone scripts,... independently from (
 
 ### Supported channel constellations:
 
-- mono
-- stereo
-- quadro
-- 5.1
-- 7.1
+- mono, stereo, quadro
+- 5.1, 7.1
 
 
