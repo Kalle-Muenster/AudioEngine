@@ -1,2 +1,3 @@
 # AudioEngine
-Synthetize audio data - by parsing tone scripts,... independendantly from data type and/or channel constellation!
+Mix and Synthetize audio data - by parsing tone scripts,... independendantly from either data type nor channel constellation!
+
