@@ -1,6 +1,6 @@
 AudioEngine
 ===========
-Mix and Synthetize audio data - by parsing tone scripts,... independendantly from data type and channel constellation!
+Mix and Synthetize audio data - by parsing tone scripts,... independently from (supported) data types and channel constellations
 
 
 ### Supported data types:
@@ -22,7 +22,7 @@ Mix and Synthetize audio data - by parsing tone scripts,... independendantly fro
 - Sun audio files (au, snd)
 - NetPbm tracks (pam)
 
-## Not supported is: 
-- Anything which is using lossy data compression,.. like mp3, atrac, mpa, aac, ac3 ... (will never be supported by this library at all, e.g. this AudioEngine is not a compression library!)
-- Anything which is using lossles data compression,.. like flc, ape, other lossess formats (maybe will gain support later some days in the future)  
+## Not supported: 
+- Anything which is using lossy data compression like: mp3, atrac, mpa, aac, ac3 ... these never will be supported by this library at all. this is not a compression library!
+- Anything which is using lossles data compression,.. like flc, ape, other lossess formats, maybe will gain support later some days in the future.  
 
