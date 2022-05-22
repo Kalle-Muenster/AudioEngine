@@ -1,5 +1,5 @@
-AudioEngine
-===========
+AudioProcessingEngine
+=====================
 Mix and Synthetize audio data - by parsing tone scripts,... independently from (supported) data types and channel constellations
 
 
