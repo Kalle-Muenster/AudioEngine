@@ -12,7 +12,7 @@ Mix and Synthetize audio data - by parsing tone scripts,... independently from (
 but even these days today now.. there stil no hardware interface seems supporting this :(
 ...so 24bit integer still seems better choice at least)
 
-### Supported channel cnstellations:
+### Supported channel constellations:
 
 - mono
 - stereo
