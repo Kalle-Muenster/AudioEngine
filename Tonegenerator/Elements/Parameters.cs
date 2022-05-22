@@ -174,11 +174,8 @@ namespace Stepflow.Audio.Elements
 
     public unsafe class ElmPtr<T> : Elementar<IntPtr>, IElmPtr<T> where T : struct // ModulationValue //, IParameter<Preci>
     {
-        public ElmPtr() : base()
-        {
-            //        type    = MODULATOR.Relative;
+        public ElmPtr() : base() {
             entity = IntPtr.Zero;
-            //        value   = GANZ;
         }
 
         public IntPtr pointer {
@@ -381,11 +378,6 @@ namespace Stepflow.Audio.Elements
         MODULATOR IParameter<Panorama>.type {get { return type; } }
         PARAMETER IParameter<Panorama>.usage { get { return usage; } }
 
-        //public static explicit operator IntPtr( PanoramaParameter cast ) {
-        //    if (!cast.Has<ElmPtr<Panorama>>()) return cast.makePointer();
-        //    else return cast.elmptr().pointer;
-        //}
-
         public static implicit operator ElmPtr<Panorama>( PanoramaParameter cast )
         {
             return cast.elmptr() as ElmPtr<Panorama>;
@@ -473,25 +465,6 @@ namespace Stepflow.Audio.Elements
     {
         public enum State { Clear = 0, Lock = 1 }
         public uint bits;
-
-        //public uint mask(ulong m)
-        //{
-        //    if (m != 0)
-        //    {
-        //        if ((m & 0xffffffff00000000) != 0)
-        //        {
-        //            SetElementar<uint>( (int)(m & 0x00000000ffffffff) )
-        //        }
-        //    }
-        //    return GetElementar<uint>();
-        //}
-
-        //public uint mask() {
-        //    return GetElementar<uint>();
-        //    set { if (!HasElementar<uint>()) Add<Elementar<uint>>(value);
-        //          else Get<Elementar<uint>>().entity = value;
-        //    }
-        //}
 
         UInt32 IParameter<UInt32>.value { get { return bits; } set { if (bits != value) { attached.changed(); bits = value; } } }
         IElmPtr<UInt32> IParameter<UInt32>.elmptr() { return Get<ElmPtr<UInt32>>(); }
