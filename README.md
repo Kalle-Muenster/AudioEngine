@@ -20,7 +20,7 @@ Mix and Synthetize audio data - by parsing tone scripts,... independently from (
 
 - Windows (wav)
 - Sun audio (au, snd)
-- NetPbm (pam) ... (quite uncommon for transporting audiodata.. but really handy format for this)
+- NetPbm (pam) ... (quite uncommon for transporting audiodata.. but really handy format for this I think)
 
 ## Not supported: 
 - Anything which is using lossy data compression like: mp3, atrac, mpa, aac, ac3 ... these never will be supported by this library at all. this is not a compression library!
