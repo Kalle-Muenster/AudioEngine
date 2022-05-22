@@ -184,14 +184,6 @@ namespace Stepflow.Audio.Elements
                 it.Current.MixInto( ref target, 0.5f );
             } 
         }
-        //protected override void update()
-        //{
-        //    base.update();
-        //    if (Has<LFO>())
-        //        UpdateAll<LFO>(phasys);
-        //    if (Has<EVP>())
-        //        UpdateAll<EVP>(phasys);
-        //}
 
         protected override IAudioFrame pullFrame() {
             if ( Has<Elementar<IAudioInStream>>() )
@@ -246,7 +238,6 @@ namespace Stepflow.Audio.Elements
 
     public interface ITrackMixer
     {
-    //    ModulationValue     volume { get; }
         ElementLength       length { get; }
         int                 tracks { get; }
         PcmFormat           format { get; set; }
