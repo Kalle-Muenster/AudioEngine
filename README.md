@@ -17,6 +17,6 @@ Mix and Synthetize audio data - by parsing tone scripts,... independendantly fro
 -- Sun audio files (au, snd)
 -- NetPbm tracks (pam)
 
-- Not supported are
--- Any buffer types which using lossy data compression,.. like mp3, atrac, mpa, aac, (und auch nich das mit was auf filmrollen am rand mit eingebrant als lochstreifen kram,.. fällt mir der name.. gerade ein! Ac3 is auch nich supported!)
-- supported are: just file formats transporting plain, uncompressed pcm data yet )
+- Not supported are:
+-- Any stream types which using lossy data compression,.. like mp3, atrac, mpa, aac, (und auch nich das mit was auf filmrollen am rand mit eingebrant als lochstreifen kram,.. fällt mir der name.. gerade ein! Ac3 ist also auch nich supported!)
+- Supported are: just file formats transporting plain, uncompressed pcm data yet.
