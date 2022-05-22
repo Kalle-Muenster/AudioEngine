@@ -148,10 +148,6 @@ namespace Stepflow.Audio.Elements
 
         public override void MixInto( ref IAudioFrame frame, float drywet )
         {
-            //FillFrame( ref mix );
-            //if ( Has<InsertEffect>() )
-            //    DoInsertsChain( ref mix );
-            //frame.Mix( mix, drywet );
             frame.Mix( PullFrame(), drywet );
         }
 
@@ -231,7 +227,6 @@ namespace Stepflow.Audio.Elements
             va2=val|(Constants.PreciTypeCode<<32)|(2<<24),
             va4=val|(Constants.PreciTypeCode<<32)|(4<<24),
             va8=val|(Constants.PreciTypeCode<<32)|(8<<24),
-          //  rng=seq|(Sequence.ElementCode<<32)|(),
         }
 
         [Flags]
@@ -878,9 +873,6 @@ namespace Stepflow.Audio.Elements
 
     public class ScriptInterpreter : Element
     {
-   //     private Queue<string> linebuffer;
-
-
         public override uint GetElementCode()
         {
             return (uint)GetHashCode();
