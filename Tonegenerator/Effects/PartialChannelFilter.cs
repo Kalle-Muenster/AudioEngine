@@ -22,9 +22,9 @@ namespace Stepflow.Audio.Elements
     /// when output format defines surround channels
     /// (.1 channel gains just lower sub band fequency
     /// and center channel mostly mid band frequencies) 
-    /// - additionally it offers applying compression
-    /// to either the input before band split or to the
-    /// outut after remixed from addjusted band levels
+    /// - additionally it offers applying soft compression
+    // (3:2 @ +half) to either the input before band
+    // split or to the output after filtering is done
     /// </summary>
     public class PartialChannelFilter : InsertEffect
     {
