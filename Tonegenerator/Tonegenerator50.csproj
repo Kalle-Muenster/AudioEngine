@@ -50,21 +50,21 @@
 
   <ItemGroup>
     <Reference Include="Consola">
-      <HintPath>..\..\Consola\bin\core5\x64\Debug\Consola.dll</HintPath>
+      <HintPath>$(ConsolaBinRoot)\$(PlatformTarget)\$(Configuration)\Consola.dll</HintPath>
     </Reference>
     <Reference Include="ControlledValues">
-      <HintPath>..\..\ControlledValues\bin\core5\x64\Debug\ControlledValues.dll</HintPath>
+      <HintPath>$(ControlledValuesBinRoot)\$(PlatformTarget)\$(Configuration)\ControlledValues.dll</HintPath>
     </Reference>
     <Reference Include="Int24Types">
-      <HintPath>..\..\Int24Types\bin\core5\x64\Debug\Int24Types.dll</HintPath>
+      <HintPath>$(Int24TypesBinRoot)\$(PlatformTarget)\$(Configuration)\Int24Types.dll</HintPath>
       <Private>true</Private>
     </Reference>
     <Reference Include="TaskAssist">
-      <HintPath>..\..\Motorsports\bin\core5\x64\Debug\TaskAssist.dll</HintPath>
+      <HintPath>$(MotorsportBinRoot)\$(PlatformTarget)\$(Configuration)\TaskAssist.dll</HintPath>
       <Private>true</Private>
     </Reference>
     <Reference Include="WaveFileHandling">
-      <HintPath>..\..\AudioDataHandling\bin\core5\x64\Debug\WaveFileHandling.dll</HintPath>
+      <HintPath>$(WaveFileHandlingBinRoot)\$(PlatformTarget)\$(Configuration)\WaveFileHandling.dll</HintPath>
     </Reference>
   </ItemGroup>
 

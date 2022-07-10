@@ -1,9 +1,18 @@
 @if "%ECHO_STATE%"=="" (@echo off ) else (@echo %ECHO_STATE% )
 
 if "%DotNetVersionString%"=="" goto ERROR
-if "%DotNetVersionString%"=="core5" set _vers_=50
-if "%DotNetVersionString%"=="dot48" set _vers_=48
-
+if "%DotNetVersionString%"=="core5" (
+set _vers_=50
+set _tool_=v143
+)
+if "%DotNetVersionString%"=="dot48" (
+set _vers_=48
+set _tool_=v140
+)
+if "%DotNetVersionString%"=="dot60" (
+set _vers_=60
+set _tool_=v143
+)
 
 :: Prepare locations
 set _name_=Tonegenerator
@@ -18,19 +27,19 @@ set TonegeneratorVersionString=0.0.0.1
 
 :: Set Dependencies
 if "%ConsolaBinRoot%"=="" (
-set ConsolaBinRoot=C:\WORKSPACE\PROJECTS\GITSPACE\Consola\bin\%DotNetVersionString%
+set ConsolaBinRoot=%_root_%\..\Consola\bin\%DotNetVersionString%
 )
 if "%Int24TypesBinRoot%"=="" (
-set Int24TypesBinRoot=C:\WORKSPACE\PROJECTS\GITSPACE\Int24Types\bin\%DotNetVersionString%
+set Int24TypesBinRoot=%_root_%\..\Int24Types\bin\%DotNetVersionString%
 )
 if "%ControlledValuesBinRoot%"=="" (
-set ControlledValuesBinRoot=C:\WORKSPACE\PROJECTS\GITSPACE\ControlledValues\bin\%DotNetVersionString%
+set ControlledValuesBinRoot=%_root_%\..\ControlledValues\bin\%DotNetVersionString%
 )
 if "%MotorsportBinRoot%"=="" (
-set MotorsportBinRoot=c:\WORKSPACE\PROJECTS\GITSPACE\Motorsports\bin\%DotNetVersionString%
+set MotorsportBinRoot=%_root_%\..\Motorsport-Taskassist\bin\%DotNetVersionString%
 )
 if "%WaveFileHandlingBinRoot%"=="" (
-set WaveFileHandlingBinRoot=c:\WORKSPACE\PROJECTS\GITSPACE\AudioDataHandling\bin\%DotNetVersionString%
+set WaveFileHandlingBinRoot=%_root_%\..\AudioDataHandling\bin\%DotNetVersionString%
 )
 
 :: Set parameters and solution files
