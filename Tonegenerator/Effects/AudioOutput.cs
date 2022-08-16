@@ -327,22 +327,22 @@ namespace Stepflow.Audio
 
     public class RealtimeRenderer
         : Renderer
-        , ITaskAsistableVehicle<SteadyAction>
+        , ITaskAsistableVehicle<Action,Action>
     {
-        private TaskAssist<SteadyAction,Action> realtimer;                  
+        private TaskAssist<SteadyAction,Action,Action> realtimer;                  
         private MessDatenStruct                 messdaten;
         private volatile bool                   intheloop;
 
         static RealtimeRenderer()
         {
             SteadyAction.SetDefaultThradingMode( true );
-            TaskAssist<SteadyAction,Action>.Init( 30 );
+            TaskAssist<SteadyAction,Action,Action>.Init( 30 );
         }
 
         public RealtimeRenderer()
         {
             intheloop = false;
-            realtimer = new TaskAssist<SteadyAction,Action>( this, renderLoop, 30 );
+            realtimer = new TaskAssist<SteadyAction,Action,Action>( this, renderLoop, 30 );
             messdaten = new MessDatenStruct();
             messdaten.PerLoopChunkSize = 44100 / 30;
         }
@@ -352,22 +352,23 @@ namespace Stepflow.Audio
             task().StartAssist();
         }
 
-        int ITaskAsistableVehicle<SteadyAction>.StartAssist()
+        int IAsistableVehicle<IActionDriver<Action,ILapFinish<Action>,Action>,ILapFinish<Action>>.StartAssist()
         {
-            return realtimer.GetAssistence( realtimer.action );
+            return realtimer.assist.GetAssistence( realtimer.action );
         }
 
-        int ITaskAsistableVehicle<SteadyAction>.StoptAssist()
+        int IAsistableVehicle<IActionDriver<Action,ILapFinish<Action>,Action>,ILapFinish<Action>>.StoptAssist()
         {
-            return realtimer.ReleaseAssist( realtimer.action );
+            return realtimer.assist.ReleaseAssist( realtimer.action );
         }
 
-        public ITaskAsistableVehicle<SteadyAction> task() {
+        public ITaskAsistableVehicle<Action,Action> task() {
             return this;
         }
 
-        public ITaskAssistor<SteadyAction> assist() {
-            return realtimer;
+        public ITaskAssistor<Action,Action> assist {
+            get { return realtimer; }
+            set { realtimer = value as TaskAssist<SteadyAction, Action, Action>;  }
         }
 
         protected override void renderLoop()
