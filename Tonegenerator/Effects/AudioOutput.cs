@@ -450,8 +450,6 @@ namespace Stepflow.Audio
         [FieldOffset(3)] public byte byte3;
     }
 
-    
-
     internal struct MessDatenStruct
     {
         public TimeSpan AverageRendertime;
@@ -550,19 +548,21 @@ namespace Stepflow.Audio
 
     public class RealtimeRenderer
         : Renderer
-        , ITaskAsistableVehicle<SteadyAction>
+        , ITaskAsistableVehicle<Action,Action>
     {
-        private TaskAssist<SteadyAction, Action> realtimer;
+        private TaskAssist<SteadyAction,Action,Action> realtimer;
         private MessDatenStruct messdaten;
+
+
 
         static RealtimeRenderer()
         {
-            TaskAssist<SteadyAction, Action>.Init(30);
+            TaskAssist<SteadyAction,Action,Action>.Init(30);
         }
 
         public RealtimeRenderer()
         {
-            realtimer = new TaskAssist<SteadyAction, Action>(this, renderLoop, 30);
+            realtimer = new TaskAssist<SteadyAction,Action,Action>(this, renderLoop, 30);
             messdaten = new MessDatenStruct();
             messdaten.PerLoopChunkSize = 44100 / 30;
         }
@@ -573,35 +573,34 @@ namespace Stepflow.Audio
             task().StartAssist();
         }
 
-        int ITaskAsistableVehicle<SteadyAction>.StartAssist()
-        {
-            return realtimer.GetAssistence(realtimer.action);
-        }
-
-        int ITaskAsistableVehicle<SteadyAction>.StoptAssist()
-        {
-            return realtimer.ReleaseAssist(realtimer.action);
-        }
-
-        public ITaskAsistableVehicle<SteadyAction> task()
+        
+        public ITaskAsistableVehicle<Action,Action> task()
         {
             return this;
         }
 
-        public ITaskAssistor<SteadyAction> assist()
+        int IAsistableVehicle<IActionDriver<Action,ILapFinish<Action>,Action>,ILapFinish<Action>>.StartAssist()
         {
-            return realtimer;
+             return realtimer.assist.GetAssistence( realtimer.action );
+        }
+
+        int IAsistableVehicle<IActionDriver<Action,ILapFinish<Action>,Action>,ILapFinish<Action>>.StoptAssist()
+        {
+             return realtimer.assist.ReleaseAssist( realtimer.action );
+        }
+
+        ITaskAssistor<Action,Action> ITaskAsistableVehicle<Action,Action>.assist
+        {
+            get { return realtimer; }
+            set { realtimer = value as TaskAssist<SteadyAction,Action,Action>; }
         }
 
         protected override void renderLoop()
         {
             uint writable = outputage.CanStream( StreamDirection.OUTPUT );
-            if (writable > messdaten.PerLoopChunkSize)
-            {
+            if (writable > messdaten.PerLoopChunkSize) {
                 writable = messdaten.PerLoopChunkSize;
-            }
-            do
-            {
+            } do {
                 sourceage.Update();
             } while (--writable > 0);
         }

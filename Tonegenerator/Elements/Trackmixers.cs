@@ -302,8 +302,6 @@ namespace Stepflow.Audio.Elements
         private Elementar<PcmFormat> _format;
         private BarrierFlags          inputs;
         private ElementLength         length;
-        
-        
 
         public bool istime {
             get { return Get<ElementCost>().perFrame() < 0.1; }
@@ -491,7 +489,7 @@ namespace Stepflow.Audio.Elements
             } else {
                 if ( parameter[0] != null ) {
                     if ( parameter[0] is string )  {
-                        src = new WaveFileReader(parameter[0] as string);
+                        src = new WaveFileReader( parameter[0] as string );
                     } else if (parameter[0] is Consola.StdStreams) {
                         src = new AudioFromStdIn( parameter[0] as Consola.StdStreams );
                     }
