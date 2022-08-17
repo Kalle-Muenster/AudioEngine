@@ -129,13 +129,13 @@ namespace Stepflow.Audio
 
 #if EFFECTS
             MasterTrack master = ToneGenerator.parser.OutputMixer;
-            ThreBandEQ.Insert eq = ToneGenerator.parser.OutputMixer.GetTrack(0).Fx<ThreBandEQ.Insert>();
+            ThreeBandEQ.Insert eq = ToneGenerator.parser.OutputMixer.GetTrack(0).Fx<ThreeBandEQ.Insert>();
             eq.fxImpl().InGain = Element.HALB;
             eq.fxImpl().LoGain = Element.GANZ;
             eq.fxImpl().HiGain = Element.GANZ;
             eq.fxImpl().MiGain = Element.NULL;
-            eq.fxImpl()[ThreBandEQ.PARAMETERS.HI] = track.Add<LFO>(PARAMETER.FxPara, (Preci)0.0, (Preci)0.25, (Preci)2.0, ControlMode.PingPong, (Preci)master.format.SampleRate);
-            eq.fxImpl()[ThreBandEQ.PARAMETERS.LO] = track.Add<LFO>(PARAMETER.FxPara, (Preci)0.0, (Preci)1.0, (Preci)2.5, ControlMode.Sinus, (Preci)master.format.SampleRate);
+            eq.fxImpl()[ThreeBandEQ.PARAMETERS.HI] = track.Add<LFO>(PARAMETER.FxPara, (Preci)0.0, (Preci)0.25, (Preci)2.0, ControlMode.PingPong, (Preci)master.format.SampleRate);
+            eq.fxImpl()[ThreeBandEQ.PARAMETERS.LO] = track.Add<LFO>(PARAMETER.FxPara, (Preci)0.0, (Preci)1.0, (Preci)2.5, ControlMode.Sinus, (Preci)master.format.SampleRate);
             eq.fxImpl().Compression = Compress.POST;
             eq.DryWet.actual = (Preci)1.0;
             eq.ByPass = false;

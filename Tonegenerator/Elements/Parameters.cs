@@ -22,7 +22,7 @@ namespace Stepflow.Audio.Elements
         T value { get; set; }
         IElmPtr<T> elmptr();
 
-
+        string   Name { get; set; }
         MODULATOR type { get; }
         PARAMETER usage { get; }
         IParameter<T> elementar();
@@ -33,6 +33,16 @@ namespace Stepflow.Audio.Elements
     {
         public AuPCMf32bit4ch frame;
         public ModFrame value;
+
+        public string Name {
+            get { return Has<ElementName>() 
+                       ? Get<ElementName>().entity
+                       : string.Empty; }
+            set { if( Has<ElementName>() ) {
+                    Get<ElementName>().entity = value;
+                } else { Add<ElementName>( value ); }
+            }
+        }
 
         AuPCMf32bit4ch IParameter<AuPCMf32bit4ch>.value { get { return frame; } set { frame = value; } }
         public AuPCMf32bit4ch actual { get { return frame; } set { frame = value; } }
@@ -97,6 +107,16 @@ namespace Stepflow.Audio.Elements
 
         public override uint GetElementCode() {
             return ElementCode;
+        }
+
+        public string Name {
+            get { return Has<ElementName>()
+                       ? Get<ElementName>().entity
+                       : string.Empty; }
+            set { if( Has<ElementName>() ) {
+                    Get<ElementName>().entity = value;
+                } else { Add<ElementName>( value ); }
+            }
         }
 
         virtual public IParameter<Preci> elementar() { return this; } 
@@ -185,6 +205,16 @@ namespace Stepflow.Audio.Elements
             }
         }
 
+        public string Name {
+            get { return Has<ElementName>()
+                       ? Get<ElementName>().entity
+                       : string.Empty; }
+            set { if( Has<ElementName>() ) {
+                    Get<ElementName>().entity = value;
+                } else { Add<ElementName>( value ); }
+            }
+        }
+
         MODULATOR IParameter<T>.type { get { return MODULATOR.Relative; } }
         PARAMETER IParameter<T>.usage { get { return elementar().usage; } }
         public IParameter<T> elementar() { return attached as IParameter<T>; }
@@ -223,15 +253,16 @@ namespace Stepflow.Audio.Elements
     public unsafe class ElmPtr : ElmPtr<Preci>
     {
 
-        public unsafe override void SetTarget(ref Preci variable)
+        public unsafe override void SetTarget( ref Preci variable )
         {
             fixed (Preci* pt = &variable)
                 pointer = new IntPtr(pt);
         }
 
-        public override Element Init(Element attach, object[] initializations)
+        public override Element Init( Element attach, object[] initializations )
         {
             ModulationParameter at;
+
             if (attach is ModulationParameter)
                 at = attach as ModulationParameter;
             else throw new Exception("nö");
@@ -247,9 +278,9 @@ namespace Stepflow.Audio.Elements
                 else if ((i > 2) && (initializations[i] is float))
                     *(Preci*)pointer.ToPointer() = (Preci)(float)initializations[i];
             }
-            if (pointer == IntPtr.Zero) {
+            if ( pointer == IntPtr.Zero ) {
                 if (at is ModulationValue) {
-                        fixed (void* p = &(at as ModulationValue).value) entity = new IntPtr(p);
+                    fixed (void* p = &(at as ModulationValue).value) entity = new IntPtr(p);
                 } else {
                     fixed (void* p = &at.Get<Elementar<Preci>>().entity) entity = new IntPtr(p);
                 }
@@ -261,7 +292,7 @@ namespace Stepflow.Audio.Elements
             set { this.value = value; }
         }
 
-        public static implicit operator Preci(ElmPtr cast) {
+        public static implicit operator Preci( ElmPtr cast ) {
             return cast.actual;
         }
 
@@ -359,6 +390,14 @@ namespace Stepflow.Audio.Elements
             return ElementCode;
         }
 
+        public string Name {
+            get { return Has<ElementName>() ? Get<ElementName>() : track().Name + ".Panorama"; }
+            set { if( Has<ElementName>() ) {
+                    Get<ElementName>().entity = value;
+                } else { Add<ElementName>( value ); }
+            }
+        }
+
         public IParameter<Panorama> elementar() { return this; }
         public virtual Panorama actual { get { return Panorama.Neutral; } set { elementar().value = value; } }
         public virtual IElmPtr<Panorama> elmptr() {
@@ -441,6 +480,12 @@ namespace Stepflow.Audio.Elements
 
         public ElementLength() : base() { frames = 0; }
 
+        public string Name {
+            get { return Has<ElementName>() ? Get<ElementName>().entity : track().Name + ".Length"; }
+            set { if( Has<ElementName>() ) Get<ElementName>().entity = value; else Add<ElementName>( value ); }
+        }
+
+
         public override Element Init( Element attach, object[] initializations )
         {
             for( int i = 0; i< initializations.Length; ++i ) {
@@ -463,15 +508,30 @@ namespace Stepflow.Audio.Elements
 
     public class BarrierFlags : Element, IParameter<UInt32>
     {
-        public enum State { Clear = 0, Lock = 1 }
-        public uint bits;
+        public enum State { Clear = 0, Block = 1 }
+        public uint  bits;
+        private uint mask;
 
         UInt32 IParameter<UInt32>.value { get { return bits; } set { if (bits != value) { attached.changed(); bits = value; } } }
         IElmPtr<UInt32> IParameter<UInt32>.elmptr() { return Get<ElmPtr<UInt32>>(); }
 
         MODULATOR IParameter<UInt32>.type { get { return MODULATOR.StaticValue; } }
 
-        public BarrierFlags() : base() { bits = 0xffffffffu; usage = PARAMETER.Segments; }
+        public BarrierFlags() : base() {
+            bits = 0xffffffffu;
+            mask = 0xffffffffu;
+            usage = PARAMETER.Segments;
+        }
+
+        public string Name {
+            get { return Has<ElementName>()
+                       ? Get<ElementName>().entity
+                       : string.Empty; }
+            set { if( Has<ElementName>() ) {
+                    Get<ElementName>().entity = value;
+                } else { Add<ElementName>( value ); }
+            }
+        }
 
         public uint actual {
             get{ return elementar().value; }
@@ -486,17 +546,40 @@ namespace Stepflow.Audio.Elements
         public PARAMETER usage;
         PARAMETER IParameter<UInt32>.usage { get { return usage; } }
 
-        public State this[int idx] {
+        public State this[ int idx ] {
             get{ return (State)((bits & (0x00000001u << idx)) >> idx); }
             set{ if( value == State.Clear )
-                    bits &= (0x00000001u << idx);
+                    bits &= ~(0x00000001u << idx);
                else bits |= (0x00000001u << idx); }
+        }
+
+        public int Count() {
+            return (bits & mask) == 0 
+                 ? 0 : Count( State.Block );
+        }
+
+        public int Count( State states ) {
+            uint mums = mask;
+            uint bums = bits; 
+            int val = 0;
+            int add = (int)states;
+            int not = add == 0 ? 1 : 0;
+            while( (mums & 1u) > 0 ) {
+                val += ((bums & mums) & 1u ) > 0 ? add : not ;
+                bums >>= 1;
+                mums >>= 1;
+            } return val;
+        }
+
+        public int Active {
+            get { int num=0; while( (mask & (1u << num++)) > 0 ) ; return num-1; }
+            set { mask = 0; while( value-- > 0 ) mask = (mask<<1)|1u; }
         }
 
         public IParameter<uint> elementar() { return this; }
 
-        public static implicit operator State(BarrierFlags cast) {
-            return cast.bits == 0 ? State.Clear : State.Lock;
+        public static implicit operator State( BarrierFlags cast ) {
+            return (cast.bits & cast.mask) == 0 ? State.Clear : State.Block;
         }
 
     }

@@ -177,7 +177,7 @@ namespace Stepflow.Audio.Elements
             attached = mixer;
         }
         virtual public uint FrameCount { get { return Get<ElementLength>().frames; } }
-        public void DoSubTracksMix( ref IAudioFrame target )
+        virtual public void DoSubTracksMix( ref IAudioFrame target )
         {
             IEnumerator<MixTrack> it = All<MixTrack>();
             while( it.MoveNext() ) {
@@ -241,9 +241,14 @@ namespace Stepflow.Audio.Elements
         ElementLength       length { get; }
         int                 tracks { get; }
         PcmFormat           format { get; set; }
+
+        void SoloTrack(int number);
+        void MuteTrack(int number);
+        void SummTrack(int number);
+
         MixTrack GetTrack( int trackIdx );
         int AddTrack( MixTrack track );
-        MixTrack this[int track] { get; set; }
+        MixTrack this[int track] { get; }
         void Update();
     }
 
@@ -300,8 +305,8 @@ namespace Stepflow.Audio.Elements
         public  Effectroutes          routes;
         public  IAudioStream          output;
         private Elementar<PcmFormat> _format;
-        private BarrierFlags          inputs;
         private ElementLength         length;
+        private BarrierFlags          inputs;
 
         public bool istime {
             get { return Get<ElementCost>().perFrame() < 0.1; }
@@ -314,8 +319,10 @@ namespace Stepflow.Audio.Elements
 
         ElementLength  ITrackMixer.length { get { return length; } }
         public int                 tracks { get { return Num<MixTrack>(); } }
-        public bool                active { get { return action.HasFlag(PROGRESS.Play); } }
-
+        public bool                active { get { return action.HasFlag( PROGRESS.Play ); } }
+        private BarrierFlags muted() { return Get<BarrierFlags>(1); }
+        private BarrierFlags solos() { return Get<BarrierFlags>(2); }     
+                   
         public MasterTrack( PcmFormat inputformat )
         {
             action = PROGRESS.Init;
@@ -324,6 +331,31 @@ namespace Stepflow.Audio.Elements
             inputs = Add<BarrierFlags>();
             inputs.Clear = false;
             length = Add<ElementLength>( 0u );
+        }
+
+        public void MuteTrack( int number )
+        {
+            muted()[number] = BarrierFlags.State.Block;
+        }
+
+        public void SoloTrack( int number )
+        {
+            muted()[number] = BarrierFlags.State.Clear;
+            solos()[number] = BarrierFlags.State.Block;
+        }
+
+        public void SummTrack( int number )
+        {
+            muted()[number] = BarrierFlags.State.Clear;
+            solos()[number] = BarrierFlags.State.Clear;
+        }
+
+        public bool isMuted( int track )
+        {
+            bool mute = !solos().Clear;
+            if ( mute ) mute = solos()[track] == BarrierFlags.State.Clear;
+            if (!mute ) mute = muted()[track] == BarrierFlags.State.Block;
+            return mute;
         }
 
         public MixTrack this[int trackIdx]
@@ -344,6 +376,7 @@ namespace Stepflow.Audio.Elements
             newTrack.SetMaster( this );
             Add( newTrack );
             inputs.Clear = false;
+            inputs.Active = trackCount + 1;
             return trackCount;
         }
 
@@ -353,6 +386,7 @@ namespace Stepflow.Audio.Elements
             for( int i = 0; i < trackCount; ++i ) {
                 Rem<MixTrack>(i);
             } inputs.Clear = false;
+            inputs.Active = 32;
         }
 
         public void Enable()
@@ -400,6 +434,7 @@ namespace Stepflow.Audio.Elements
                 length.frames = trks.Current.FrameCount > length.frames
                               ? trks.Current.FrameCount : length.frames; 
             }
+            inputs.Active = Num<MixTrack>();
             inputs.Clear = true;
             return Init( this );
         }
@@ -414,6 +449,15 @@ namespace Stepflow.Audio.Elements
             if( attach == null || attach == this ) {
                 attached = this;
             } return attached;
+        }
+
+        public override void DoSubTracksMix( ref IAudioFrame target )
+        {
+            IEnumerator<MixTrack> it = All<MixTrack>();
+            while( it.MoveNext() ) {
+                if( !isMuted( it.Current.Number ) )
+                    it.Current.MixInto( ref target, 0.5f );
+            } 
         }
 
         public void DoRouteReturns( ref IAudioFrame target )

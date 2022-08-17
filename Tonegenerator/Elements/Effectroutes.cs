@@ -42,6 +42,7 @@ namespace Stepflow.Audio.Elements
     public interface IEffect
     {
         Preci Level { get; set; }
+        bool ByPass { get; set; }
         IFrame DoFrame( IFrame input );
         void ApplyOn( ref IFrame output );
         AudioFrameType frameType();
@@ -53,6 +54,8 @@ namespace Stepflow.Audio.Elements
         public new const uint ElementCode = 0x00ff0000;
         internal protected EffectMode FxMode;
         internal protected EffectType FxType;
+
+        virtual public bool ByPass { get; set; }
 
         protected ModulationValue mix;
 
@@ -223,7 +226,6 @@ namespace Stepflow.Audio.Elements
     {
         IInsert         fxInsrt();
         ModulationValue DryWet { get; set; }
-        bool            ByPass { get; set; }
     }
     public class InsertEffect : Effect, IInsert
     {
@@ -233,7 +235,7 @@ namespace Stepflow.Audio.Elements
                  mix = Set<ModulationParameter>( 0, value ) as ModulationValue;
             }
         }
-        public virtual bool ByPass { get; set; }
+        //public override bool ByPass { get; set; }
         public IInsert fxInsrt() { return this; }
     }
 
@@ -265,7 +267,7 @@ namespace Stepflow.Audio.Elements
     {
         protected IFrame insent;
 
-        public virtual bool ByPass { get; set; }
+        //public virtual bool ByPass { get; set; }
         public override Element Init( Element attach )
         {
             PcmFormat format = attach.render.master.output.GetFormat();
@@ -329,7 +331,7 @@ namespace Stepflow.Audio.Elements
     {
         public const int         SNT = 0; 
         protected int            returnRoute;        
-        public override string   Name { get { return target().Name; } }
+        public override string   Name { get { return fxinst().Name; } }
         protected uint           rate;
         protected AudioFrameType type;
         // output into the send route whee this endpoint (entrypoint from this point of view) belongs to / leads to 
@@ -350,7 +352,7 @@ namespace Stepflow.Audio.Elements
             PcmFormat format = render.master.format;
             rate = format.SampleRate;
             type = format.FrameType;
-            FxType = (EffectType)(target().GetElementCode() & 0x0000ff00);
+            FxType = (EffectType)(fxinst().GetElementCode() & 0x0000ff00);
             output = format.CreateEmptyFrame();
             return this;
         }
@@ -364,14 +366,14 @@ namespace Stepflow.Audio.Elements
         {
             return attached as MixTrack;
         }
-        protected SendFx target()
+        protected SendFx fxinst()
         {
             return track().element().render.master.Get<Effectroutes>().Get<SendEffect>( returnRoute ) as SendFx;
         }
 
         public override void ApplyOn( ref IFrame frame )
         {
-            target().Send( DoFrame( frame ) );
+            if( !ByPass ) fxinst().Send( DoFrame( frame ) );
         }
 
         public override IFrame DoFrame( IFrame frame )

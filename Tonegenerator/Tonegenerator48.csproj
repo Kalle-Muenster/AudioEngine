@@ -132,7 +132,7 @@
     <Compile Include="Effects\FormantFilter.cs" />
     <Compile Include="Effects\MultiLayerDelay.cs" />
     <Compile Include="Effects\PartialChannelFilter.cs" />
-    <Compile Include="Effects\ThreBandEQ.cs" />
+    <Compile Include="Effects\ThreeBandEQ.cs" />
     <Compile Include="Effects\AudioOutput.cs" />
     <Compile Include="Effects\WhirlWah.cs" />
     <Compile Include="Elements\Compounds.cs" />
