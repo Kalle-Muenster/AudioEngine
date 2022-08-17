@@ -13,15 +13,15 @@ using MonoPreciFrame = Stepflow.Audio.FrameTypes.AuPCMf32bit1ch;
 
 namespace Stepflow.Audio.Elements
 {
-    public class ThreBandEQ : FxPlug
+    public class ThreeBandEQ : FxPlug
     {
         public class Insert
-            : InsertEffect<ThreBandEQ>, IInsert
+            : InsertEffect<ThreeBandEQ>, IInsert
         {
             public override bool ByPass { get { return fxImpl().ByPass; } set { fxImpl().ByPass = value; } }
 
             public Insert() : base() {
-                impl = new ThreBandEQ( this );
+                impl = new ThreeBandEQ( this );
                 FxType = EffectType.Filter;
             }
 
@@ -29,15 +29,15 @@ namespace Stepflow.Audio.Elements
                 return impl.allparams;
             }
 
-            public ThreBandEQ Fx() { return impl; }
+            public ThreeBandEQ Fx() { return impl; }
         }
 
         public class Send
-            : SendEffect<ThreBandEQ>
+            : SendEffect<ThreeBandEQ>
             , ISend
         {
             public Send() : base() {
-                impl = new ThreBandEQ( this );
+                impl = new ThreeBandEQ( this );
                 FxType = EffectType.Filter;
             }
 
@@ -45,7 +45,7 @@ namespace Stepflow.Audio.Elements
                 return impl.allparams;
             }
 
-            public ThreBandEQ Fx() { return impl; }
+            public ThreeBandEQ Fx() { return impl; }
         }
 
         public enum PARAMETERS {
@@ -149,12 +149,12 @@ namespace Stepflow.Audio.Elements
             }
         }
 
-        public ThreBandEQ( Insert element ) : base(element) {
+        public ThreeBandEQ( Insert element ) : base(element) {
             elm.FxType = EffectType.Filter;
             elm.Add<ElementName>( GetType().Name );
         }
 
-        public ThreBandEQ( Send element ) : base(element) {
+        public ThreeBandEQ( Send element ) : base(element) {
             elm.FxType = EffectType.Filter;
             elm.Add<ElementName>( GetType().Name );
         }
